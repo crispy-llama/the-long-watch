@@ -73,11 +73,10 @@ export type UserData = {
   settings?: { view: 'grid' | 'list'; country: string };
 };
 
-// ── Filters / sort ───────────────────────────────────────────────────────────
+// ── Filters ───────────────────────────────────────────────────────────────────
 
 export type ViewFilter = 'all' | 'seen' | 'unseen';
 export type RuntimeFilter = 'all' | 'under2h' | '2to3h' | 'over3h';
-export type SortKey = 'rank' | 'year' | 'title' | 'runtime' | 'rating' | 'votes' | 'seenAt';
 
 export type FiltersState = {
   view: ViewFilter;

@@ -7,12 +7,15 @@ const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
 const TMDB_IMG_W185 = 'https://image.tmdb.org/t/p/w185';
 const TMDB_IMG_W1280 = 'https://image.tmdb.org/t/p/w1280';
 
-function flagEmoji(countryCode: string): string {
-  return countryCode
+/** Renders a country as a flag emoji + full name, e.g. 🇺🇸 United States */
+function CountryLabel({ code, name }: { code: string; name: string }) {
+  // Regional indicator characters: A=U+1F1E6, offset by char code
+  const flag = code
     .toUpperCase()
     .split('')
     .map((c) => String.fromCodePoint(0x1f1e6 + c.charCodeAt(0) - 65))
     .join('');
+  return <span><span aria-hidden="true">{flag} </span>{name}</span>;
 }
 
 function formatRuntime(minutes: number): string {
@@ -109,7 +112,7 @@ export function DetailPanel() {
                 )}
                 {movie.originCountries[0] && (
                   <span class="detail-meta-item">
-                    · {flagEmoji(movie.originCountries[0].code)} {movie.originCountries[0].name}
+                    · <CountryLabel code={movie.originCountries[0].code} name={movie.originCountries[0].name} />
                   </span>
                 )}
                 <span class="detail-meta-item">· {movie.originalLanguage.name}</span>

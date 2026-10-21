@@ -1,5 +1,5 @@
-import { top250, filters, sort, sortDesc } from '../state.ts';
-import type { FiltersState, SortKey } from '../types.ts';
+import { top250, filters } from '../state.ts';
+import type { FiltersState } from '../types.ts';
 import { DEFAULT_FILTERS } from '../types.ts';
 import { useRef } from 'preact/hooks';
 
@@ -10,12 +10,9 @@ export function Toolbar() {
 
   if (!data) return null;
 
-  // Build decade options from the data
   const decades = [...new Set(data.movies.map((m) => Math.floor(m.year / 10) * 10))].sort(
     (a, b) => b - a,
   );
-
-  // Build genre options
   const genres = [...new Set(data.movies.flatMap((m) => m.genres))].sort();
 
   function setFilter<K extends keyof FiltersState>(key: K, value: FiltersState[K]) {
@@ -35,38 +32,23 @@ export function Toolbar() {
     f.countries.length > 0 ||
     f.search !== '';
 
-  // Keyboard shortcut: / focuses search
   if (typeof document !== 'undefined') {
-    document.addEventListener(
-      'keydown',
-      (e) => {
-        if (
-          e.key === '/' &&
-          document.activeElement?.tagName !== 'INPUT' &&
-          document.activeElement?.tagName !== 'TEXTAREA'
-        ) {
-          e.preventDefault();
-          searchRef.current?.focus();
-        }
-      },
-      { once: false },
-    );
+    document.addEventListener('keydown', (e) => {
+      if (
+        e.key === '/' &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA'
+      ) {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    }, { once: false });
   }
-
-  const sortOptions: { value: SortKey; label: string }[] = [
-    { value: 'rank', label: 'Rank' },
-    { value: 'year', label: 'Year' },
-    { value: 'title', label: 'Title' },
-    { value: 'rating', label: 'IMDb Rating' },
-    { value: 'votes', label: 'Votes' },
-    { value: 'runtime', label: 'Runtime' },
-    { value: 'seenAt', label: 'Date Seen' },
-  ];
 
   return (
     <div class="toolbar">
-      <div class="toolbar-inner">
-        {/* Search */}
+      {/* Row 1: Search */}
+      <div class="toolbar-row toolbar-row-search">
         <div class="search-box">
           <span class="search-icon" aria-hidden="true">🔍</span>
           <input
@@ -78,8 +60,10 @@ export function Toolbar() {
             aria-label="Search films"
           />
         </div>
+      </div>
 
-        {/* View filter chips */}
+      {/* Row 2: View chips */}
+      <div class="toolbar-row toolbar-row-chips">
         <div class="filter-chips">
           {(['all', 'seen', 'unseen'] as const).map((v) => (
             <button
@@ -91,9 +75,14 @@ export function Toolbar() {
               {v === 'all' ? 'All' : v === 'seen' ? '✓ Seen' : '○ Unseen'}
             </button>
           ))}
+          {hasActiveFilters && (
+            <button class="chip" onClick={clearFilters}>✕ Clear</button>
+          )}
         </div>
+      </div>
 
-        {/* Genre filter */}
+      {/* Row 3: Filter dropdowns — horizontally scrollable on mobile */}
+      <div class="toolbar-row toolbar-row-filters">
         <select
           class="select-filter"
           value={f.genres[0] ?? ''}
@@ -104,14 +93,9 @@ export function Toolbar() {
           aria-label="Filter by genre"
         >
           <option value="">All genres</option>
-          {genres.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
+          {genres.map((g) => <option key={g} value={g}>{g}</option>)}
         </select>
 
-        {/* Decade filter */}
         <select
           class="select-filter"
           value={f.decade ?? ''}
@@ -122,14 +106,9 @@ export function Toolbar() {
           aria-label="Filter by decade"
         >
           <option value="">All decades</option>
-          {decades.map((d) => (
-            <option key={d} value={d}>
-              {d}s
-            </option>
-          ))}
+          {decades.map((d) => <option key={d} value={d}>{d}s</option>)}
         </select>
 
-        {/* Runtime filter */}
         <select
           class="select-filter"
           value={f.runtime}
@@ -143,39 +122,6 @@ export function Toolbar() {
           <option value="2to3h">2–3 hours</option>
           <option value="over3h">Over 3h</option>
         </select>
-
-        {hasActiveFilters && (
-          <button class="chip" onClick={clearFilters}>
-            ✕ Clear filters
-          </button>
-        )}
-
-        <div class="toolbar-right">
-          {/* Sort */}
-          <select
-            class="select-filter"
-            value={sort.value}
-            onChange={(e) => {
-              sort.value = (e.target as HTMLSelectElement).value as SortKey;
-            }}
-            aria-label="Sort by"
-          >
-            {sortOptions.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          <button
-            class="icon-btn"
-            onClick={() => (sortDesc.value = !sortDesc.value)}
-            title={sortDesc.value ? 'Sort descending' : 'Sort ascending'}
-            aria-label="Toggle sort direction"
-            style="font-size:1rem"
-          >
-            {sortDesc.value ? '↓' : '↑'}
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
  */
 
 import { signal, computed } from '@preact/signals';
-import type { Top250File, HistoryFile, UserData, FiltersState, SortKey } from './types.ts';
+import type { Top250File, HistoryFile, UserData, FiltersState } from './types.ts';
 import { DEFAULT_FILTERS } from './types.ts';
 import { loadUserData } from './storage.ts';
 
@@ -16,8 +16,6 @@ export const userData = signal<UserData>(loadUserData());
 // ── UI ───────────────────────────────────────────────────────────────────────
 
 export const filters = signal<FiltersState>(DEFAULT_FILTERS);
-export const sort = signal<SortKey>('rank');
-export const sortDesc = signal<boolean>(false);
 export const viewMode = signal<'grid' | 'list'>('grid');
 export const selectedImdbId = signal<string | null>(null);
 export const showStats = signal<boolean>(false);
@@ -37,10 +35,8 @@ export const filteredMovies = computed(() => {
   if (!data) return [];
   const f = filters.value;
   const ud = userData.value;
-  const s = sort.value;
-  const desc = sortDesc.value;
 
-  let movies = data.movies.filter((m) => {
+  return data.movies.filter((m) => {
     if (f.view === 'seen' && !ud.seen[m.imdbId]) return false;
     if (f.view === 'unseen' && ud.seen[m.imdbId]) return false;
     if (f.genres.length > 0 && !f.genres.some((g) => m.genres.includes(g))) return false;
@@ -64,25 +60,5 @@ export const filteredMovies = computed(() => {
     }
     return true;
   });
-
-  movies = [...movies].sort((a, b) => {
-    let cmp = 0;
-    switch (s) {
-      case 'rank':    cmp = a.rank - b.rank; break;
-      case 'year':    cmp = a.year - b.year; break;
-      case 'title':   cmp = a.title.localeCompare(b.title); break;
-      case 'runtime': cmp = (a.runtime ?? 0) - (b.runtime ?? 0); break;
-      case 'rating':  cmp = a.imdbRating - b.imdbRating; break;
-      case 'votes':   cmp = a.imdbVotes - b.imdbVotes; break;
-      case 'seenAt': {
-        const sa = ud.seen[a.imdbId]?.seenAt ?? '';
-        const sb = ud.seen[b.imdbId]?.seenAt ?? '';
-        cmp = sa.localeCompare(sb);
-        break;
-      }
-    }
-    return desc ? -cmp : cmp;
-  });
-
-  return movies;
+  // data.movies is already sorted by rank from the build script
 });

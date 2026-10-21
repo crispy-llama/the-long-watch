@@ -268,27 +268,43 @@ img { display: block; max-width: 100%; }
 
 /* ── Toolbar ─────────────────────────────────────────────────────────────────── */
 .toolbar {
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 1rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
   position: sticky;
   top: 56px;
   z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.toolbar-inner {
-  max-width: 1400px;
-  margin: 0 auto;
+.toolbar-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   align-items: center;
+  gap: 0.5rem;
 }
+
+.toolbar-row-search .search-box {
+  flex: 1;
+  max-width: 100%;
+}
+
+.toolbar-row-chips {
+  flex-wrap: wrap;
+}
+
+.toolbar-row-filters {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 3px;
+  margin: -3px;
+}
+.toolbar-row-filters::-webkit-scrollbar { display: none; }
+.toolbar-row-filters .select-filter { flex-shrink: 0; }
 
 .search-box {
-  flex: 1;
-  min-width: 180px;
-  max-width: 320px;
   position: relative;
 }
 
@@ -352,13 +368,6 @@ img { display: block; max-width: 100%; }
   font-family: var(--font);
   font-size: 0.8rem;
   cursor: pointer;
-}
-
-.toolbar-right {
-  display: flex;
-  gap: 0.35rem;
-  align-items: center;
-  margin-left: auto;
 }
 
 /* ── Notice banner ────────────────────────────────────────────────────────────── */
@@ -905,7 +914,7 @@ img { display: block; max-width: 100%; }
 @media (max-width: 480px) {
   :root { --card-w: 140px; }
   .header-inner { height: 48px; }
-  .toolbar { top: 48px; }
+  .toolbar { top: 48px; padding: 0.5rem 0.75rem; }
   .wordmark-text { font-size: 0.95rem; }
 }
 
