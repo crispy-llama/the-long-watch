@@ -92,7 +92,6 @@ export function App() {
 
       {data && (
         <>
-          <CriteriaBanner />
           {showNewFilmsNotice.value && <NewFilmsNotice generatedAt={data.generatedAt} />}
           <Toolbar />
         </>
@@ -104,6 +103,7 @@ export function App() {
             <p style="text-align:center;padding:4rem;color:var(--text-muted)">Loading…</p>
           ) : (
             <>
+              <CriteriaBanner />
               <FilmGrid />
               <FormerFilms />
             </>

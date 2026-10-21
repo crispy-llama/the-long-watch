@@ -151,6 +151,54 @@ img { display: block; max-width: 100%; }
   gap: 0.25rem;
 }
 
+/* Desktop: show icon bar, hide hamburger */
+.header-actions-desktop { display: flex; }
+.header-hamburger       { display: none; }
+.header-menu-wrap       { position: relative; }
+
+/* Dropdown menu */
+.header-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  min-width: 200px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.header-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.header-dropdown-item:hover { background: var(--bg-raised); }
+.header-dropdown-item + .header-dropdown-item { border-top: 1px solid var(--border); }
+
+.header-dropdown-icon { font-size: 1rem; width: 1.25rem; text-align: center; }
+
+/* Mobile: hide icon bar, show hamburger; hide bars progress and percentage */
+@media (max-width: 600px) {
+  .header-actions-desktop { display: none; }
+  .header-hamburger       { display: flex; }
+  .header-progress-bars   { display: none; }
+  .header-progress-pct    { display: none; }
+}
+
 .icon-btn {
   display: flex;
   align-items: center;
@@ -191,34 +239,31 @@ img { display: block; max-width: 100%; }
   transition: height 0.4s ease;
 }
 
-/* ── Criteria banner ─────────────────────────────────────────────────────────── */
-.criteria-banner {
-  background: var(--bg-raised);
-  border-bottom: 1px solid var(--border);
-  padding: 0.75rem 1rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
+/* ── Criteria section ────────────────────────────────────────────────────────── */
+.criteria-section {
+  margin-bottom: 0.75rem;
 }
 
-.criteria-banner-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-.criteria-banner p { flex: 1; }
-.criteria-banner strong { color: var(--text); }
-
-.criteria-toggle {
-  flex-shrink: 0;
+.criteria-text {
   font-size: 0.8rem;
-  color: var(--accent);
-  padding: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.criteria-text--collapsed {
+  padding-bottom: 0;
+}
+
+.criteria-link {
   background: none;
   border: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: inherit;
+  color: var(--accent);
   cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* ── Toolbar ─────────────────────────────────────────────────────────────────── */

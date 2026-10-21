@@ -11,45 +11,26 @@ export function CriteriaBanner() {
     day: 'numeric',
   });
 
-  if (!showCriteriaBanner.value) {
-    return (
-      <div class="criteria-banner">
-        <div class="criteria-banner-inner">
-          <p>
-            <strong>How this list is made</strong> — top {criteria.listSize} feature films on
-            IMDb with ≥ {criteria.minVotes.toLocaleString()} votes, ranked by weighted rating.
-            Updated {lastUpdated}.{' '}
-          </p>
-          <button
-            class="criteria-toggle"
-            onClick={() => (showCriteriaBanner.value = true)}
-          >
-            Show more
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div class="criteria-banner">
-      <div class="criteria-banner-inner">
-        <p>
-          <strong>How this list is made.</strong> The {criteria.listSize} highest-rated feature
-          films on IMDb with at least <strong>{criteria.minVotes.toLocaleString()}</strong> user
-          votes. Documentaries, TV movies and shorts are excluded. Films in any language and from
-          any country are included. Ranked by a weighted rating that balances score and number of
-          votes. Updated monthly — last updated <strong>{lastUpdated}</strong>. Similar to, but
-          not the same as, IMDb's official Top 250.{' '}
-          <a href="#criteria-details">Full details</a>
+    <div class="criteria-section">
+      {showCriteriaBanner.value ? (
+        <p class="criteria-text">
+          The {criteria.listSize} highest-rated feature films on IMDb with at least{' '}
+          {criteria.minVotes.toLocaleString()} user votes. Documentaries, TV movies and shorts
+          are excluded. Films in any language and from any country are included. Ranked by a
+          weighted rating that balances score and vote count. Updated monthly — last updated{' '}
+          {lastUpdated}. Similar to, but not the same as, IMDb's official Top 250.{' '}
+          <button class="criteria-link" onClick={() => (showCriteriaBanner.value = false)}>
+            Collapse ▲
+          </button>
         </p>
-        <button
-          class="criteria-toggle"
-          onClick={() => (showCriteriaBanner.value = false)}
-        >
-          Collapse
-        </button>
-      </div>
+      ) : (
+        <p class="criteria-text criteria-text--collapsed">
+          <button class="criteria-link" onClick={() => (showCriteriaBanner.value = true)}>
+            How is this list made? ▾
+          </button>
+        </p>
+      )}
     </div>
   );
 }
