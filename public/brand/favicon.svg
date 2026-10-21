@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- White background square -->
+  <rect width="64" height="64" fill="#FFFFFF"/>
+  <!-- Six bars mark centred in 64×64, scaled from 62×53 natural size -->
+  <!-- Bar layout: width=8, gap=4, offset=5 for even bars -->
+  <!-- Total natural w = 6*8 + 5*4 = 68, scale to fit: use transform -->
+  <g transform="translate(3, 8) scale(0.855)">
+    <!-- Bar 1 (red, high) -->
+    <rect x="0"  y="0"  width="8" height="40" fill="#B90000" rx="2"/>
+    <!-- Bar 2 (orange, low) -->
+    <rect x="12" y="5"  width="8" height="40" fill="#FA5A00" rx="2"/>
+    <!-- Bar 3 (yellow, high) -->
+    <rect x="24" y="0"  width="8" height="40" fill="#FFB400" rx="2"/>
+    <!-- Bar 4 (blue, low) -->
+    <rect x="36" y="5"  width="8" height="40" fill="#0778B5" rx="2"/>
+    <!-- Bar 5 (green, high) -->
+    <rect x="48" y="0"  width="8" height="40" fill="#6AA637" rx="2"/>
+    <!-- Bar 6 (purple, low) -->
+    <rect x="60" y="5"  width="8" height="40" fill="#951E86" rx="2"/>
+  </g>
+</svg>

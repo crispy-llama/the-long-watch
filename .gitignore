@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# TMDB API cache (gitignored per spec §3.2; restored via Actions cache)
+scripts/.cache/
+
+# IMDb dataset downloads (large; re-downloaded each run)
+scripts/downloads/
+*.tsv
+*.tsv.gz
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
